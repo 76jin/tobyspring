@@ -1,4 +1,4 @@
-package springbook.user.domain;
+package springbook.user.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import springbook.user.domain.User;
+
 /**
- * JDBC¸¦ ÀÌ¿ëÇÑ µî·Ï°ú Á¶È¸ ±â´ÉÀÌ ÀÖ´Â USerDao Å¬·¡½º.
+ * JDBCë¥¼ ì´ìš©í•œ ë“±ë¡ê³¼ ì¡°íšŒ ê¸°ëŠ¥ì´ ìˆëŠ” USerDao í´ë˜ìŠ¤.
  * @author kjlee
  *
  */
@@ -55,17 +57,17 @@ public class UserDao {
 		
 		User user = new User();
 		user.setId("whiteship");
-		user.setName("¹é±â¼±");
+		user.setName("ë°±ê¸°ì„ ");
 		user.setPassword("married");
 		
 		dao.add(user);
 		
-		System.out.println(user.getId() + " µî·Ï ¼º°ø!");
+		System.out.println(user.getId() + " ë“±ë¡ ì„±ê³µ!");
 		
 		User user2 = dao.get(user.getId());
 		System.out.println(user2.getName());
 		System.out.println(user2.getPassword());
 		
-		System.out.println(user2.getId() + " Á¶È¸ ¼º°ø!");
+		System.out.println(user2.getId() + " ì¡°íšŒ ì„±ê³µ!");
 	}
 }

@@ -1,7 +1,7 @@
 package springbook.user.domain;
 
 /**
- * »ç¿ëÀÚ Á¤º¸ ÀúÀå¿ë ÀÚ¹Ùºó User Å¬·¡½º.
+ * ì‚¬ìš©ì ì •ë³´ ì €ì¥ìš© ìë°”ë¹ˆ User í´ë˜ìŠ¤.
  * @author kjlee
  *
  */
