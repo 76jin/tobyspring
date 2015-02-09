@@ -31,19 +31,6 @@ public class DaoFactory {
 	}
 
 	@Bean
-	// 분리해서 중복을 제거한 ConnectionMaker 타입 오브젝트 생성 코드.
-	public ConnectionMaker connectionMaker() {
-		return new NConnectionMaker();
-	}
-	
-//	public AccountDao accountDao() {
-//		return new AccountDao(connectionMaker());
-//	}
-//	public MessageDao messageDao() {
-//		return new MessageDao(connectionMaker());
-//	}
-	
-	@Bean
 	public DataSource dataSource() {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		

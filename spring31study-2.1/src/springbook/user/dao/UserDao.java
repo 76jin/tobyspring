@@ -150,21 +150,8 @@ public class UserDao {
 		this.dataSource = dataSource;
 	}
 
-	private ConnectionMaker connectionMaker;
-	
-	// 수정자 메소드 DI 방식을 사용함.
-	public void setConnectionMaker(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
-	}
-	
 	public UserDao() {}
 
-	// 상태를 관리하는 것도 아니니 한 번만 만들어 인스턴스 변수에 저장해두고 메소드에서 사용하게 한다.
-	public UserDao(ConnectionMaker connectionMaker) {
-//		connectionMaker = new DConnectionMaker();	// 앗!! 그런데 여기에는 클래스 이름이 나오네!!!
-		this.connectionMaker = connectionMaker; 
-	}
-	
 	public void add(User user) throws ClassNotFoundException, SQLException {
 		// 인터페이스에 정의된 메소드를 사용하므로 클래스가 바뀐다고 해도 메소드 이름이 변경될 걱정이 없다.
 //		Connection c = connectionMaker.makeConnection();
