@@ -4,6 +4,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import static springbook.user.service.UserService.MIN_LOGCOUNT_FOR_SILVER;
+import static springbook.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,9 +24,6 @@ import springbook.user.domain.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/test-applicationContext.xml")
 public class UserServiceTest {
-	
-	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
-	public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 	
 	@Autowired
 	UserService userService;

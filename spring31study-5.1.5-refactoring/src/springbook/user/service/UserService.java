@@ -30,6 +30,12 @@ public class UserService {
 		user.upgradeLevel();
 		userDao.update(user);
 	}
+	
+//	private void upgradeLevel(User user) {
+//		if (user.getLevel() == Level.BASIC) user.setLevel(Level.SILVER);
+//		else if (user.getLevel() == Level.SILVER) user.setLevel(Level.GOLD);
+//		userDao.update(user);
+//	}
 
 	private boolean canUpgradeLevel(User user) {
 		Level currentLevel = user.getLevel();
