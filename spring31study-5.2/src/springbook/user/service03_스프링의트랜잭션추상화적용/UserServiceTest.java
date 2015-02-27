@@ -1,4 +1,4 @@
-package springbook.user.service;
+package springbook.user.service03_스프링의트랜잭션추상화적용;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
@@ -34,8 +33,6 @@ public class UserServiceTest {
 	UserDao userDao;
 	@Autowired
 	DataSource dataSource;
-	@Autowired
-	PlatformTransactionManager transactionManager;
 	
 	List<User> users;
 	
@@ -56,7 +53,7 @@ public class UserServiceTest {
 	}
 	
 	@Test
-	public void upgrades() {
+	public void upgrades() throws Exception {
 		userDao.deleteAll();
 		for (User user : users)  userDao.add(user);
 		
@@ -97,12 +94,16 @@ public class UserServiceTest {
 		assertThat(userWithoutLevelRead.getLevel(), is(Level.BASIC));
 	}
 	
+	/**
+	 * 트랜잭션 동기화 방식을 적용하여 테스트가 정상 동작함.
+	 * @throws Exception
+	 */
 	@Test
-	public void upgradeAllOrNothing() {
+	public void upgradeAllOrNothing() throws Exception {
 		// 테스트용 UserService 대역 오브젝트 생성
 		UserService testUserService = new TestUserService(users.get(3).getId());
 		testUserService.setUserDao(this.userDao);
-		testUserService.setTransactionManager(this.transactionManager);
+		testUserService.setDataSource(this.dataSource);	// DI - DataSource
 
 		userDao.deleteAll();
 		for (User user : users) userDao.add(user);

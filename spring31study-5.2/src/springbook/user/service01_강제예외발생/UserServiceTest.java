@@ -1,4 +1,4 @@
-package springbook.user.service;
+package springbook.user.service01_강제예외발생;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -20,7 +20,7 @@ import springbook.user.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="/test-applicationContext.xml")
-public class UserServiceTest_NoTransaction {
+public class UserServiceTest {
 	
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	public static final int MIN_RECOMMEND_FOR_GOLD = 30;
@@ -90,6 +90,10 @@ public class UserServiceTest_NoTransaction {
 		assertThat(userWithoutLevelRead.getLevel(), is(Level.BASIC));
 	}
 	
+	/**
+	 * 예외 발생시 작업 취소 여부 테스트
+	 * @throws Exception
+	 */
 	@Test
 	public void upgradeAllOrNothing() throws Exception {
 		// 테스트용 UserService 대역 오브젝트 생성

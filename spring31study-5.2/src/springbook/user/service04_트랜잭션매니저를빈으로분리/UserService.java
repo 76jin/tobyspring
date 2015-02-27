@@ -1,38 +1,39 @@
-package springbook.user.service;
+package springbook.user.service04_트랜잭션매니저를빈으로분리;
 
-import java.sql.Connection;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
-public class UserService_JdbcTransaction {
+public class UserService {
 	
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 
-	private DataSource dataSource;
+	private PlatformTransactionManager transactionManager;
 	UserDao userDao;
 	
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setTransactionManager(
+			PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 	
+	/**
+	 *  트랜잭션 동기화 방식을 적용.
+	 * @throws Exception
+	 */
 	public void upgradeLevels() throws Exception {
-		TransactionSynchronizationManager.initSynchronization(); // 동기화 초기화
-		Connection c = DataSourceUtils.getConnection(dataSource);
-		c.setAutoCommit(false); 	// 트랜잭션 시작
-				
+		TransactionStatus status = 
+			this.transactionManager.getTransaction(new DefaultTransactionDefinition());
 		try {
 			List<User> users = userDao.getAll();
 			for (User user : users) {
@@ -40,14 +41,10 @@ public class UserService_JdbcTransaction {
 					upgradeLevel(user);
 				}
 			}
-			c.commit();
+			transactionManager.commit(status);
 		} catch (Exception e) {
-			c.rollback();
+			transactionManager.rollback(status);
 			throw e;
-		} finally {
-			DataSourceUtils.releaseConnection(c, dataSource);
-			TransactionSynchronizationManager.unbindResource(this.dataSource);
-			TransactionSynchronizationManager.clearSynchronization(); // 트랜잭션 종료
 		}
 	}
 

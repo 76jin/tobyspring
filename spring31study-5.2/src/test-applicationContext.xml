@@ -14,10 +14,23 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<bean id="userService" class="springbook.user.service.UserService">
+	<!-- For Test -->
+	<bean id="userService01" class="springbook.user.service01_강제예외발생.UserService">
+		<property name="userDao" ref="userDao" />
+	</bean>
+	<bean id="userService02" class="springbook.user.service02_트랜잭션동기화방식.UserService">
+		<property name="userDao" ref="userDao" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="userService03" class="springbook.user.service03_스프링의트랜잭션추상화적용.UserService">
+		<property name="userDao" ref="userDao" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="userService04" class="springbook.user.service04_트랜잭션매니저를빈으로분리.UserService">
 		<property name="userDao" ref="userDao" />
 		<property name="transactionManager" ref="transactionManager" />
 	</bean>
+	<!-- Test end -->
 	
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

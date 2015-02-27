@@ -1,7 +1,10 @@
-package springbook.user.service;
+package springbook.user.service03_스프링의트랜잭션추상화적용;
 
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -15,22 +18,27 @@ public class UserService {
 	public static final int MIN_LOGCOUNT_FOR_SILVER = 50;
 	public static final int MIN_RECOMMEND_FOR_GOLD = 30;
 
-	private PlatformTransactionManager transactionManager;
+	private DataSource dataSource;
 	UserDao userDao;
-
-	public void setTransactionManager(
-			PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
+	
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 	
-	public void upgradeLevels() {
+	/**
+	 *  트랜잭션 동기화 방식을 적용.
+	 * @throws Exception
+	 */
+	public void upgradeLevels() throws Exception {
+		PlatformTransactionManager transactionManager = 
+			new DataSourceTransactionManager(dataSource);
+		
 		TransactionStatus status = 
-		this.transactionManager.getTransaction(new DefaultTransactionDefinition());
-				
+			transactionManager.getTransaction(new DefaultTransactionDefinition());
 		try {
 			List<User> users = userDao.getAll();
 			for (User user : users) {
@@ -38,9 +46,9 @@ public class UserService {
 					upgradeLevel(user);
 				}
 			}
-			this.transactionManager.commit(status);
+			transactionManager.commit(status);
 		} catch (Exception e) {
-			this.transactionManager.rollback(status);
+			transactionManager.rollback(status);
 			throw e;
 		}
 	}
